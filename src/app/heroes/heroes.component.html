@@ -1,0 +1,24 @@
+<div class="container">
+  <div class="row">
+
+    <div>
+
+      <div>
+
+        <button type="button" class="btn btn-default" (click)="fileInput.click()">Add Image
+          <i class="fa fa-plus"></i>
+        </button>
+
+        <input type='file' class="file-uploader" (change)="onSelectFile($event)" #fileInput/>
+
+        <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+          <div class="example-box" *ngFor="let img of images" class="image-preview" cdkDrag>
+            <img [src]="img.name" style="max-height: 350px; max-width: 350px">
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
