@@ -23,6 +23,7 @@ export class ImageService {
   }
 
   addHero(name: Image): Observable<Image> {
+    console.log(name);
     return this.http.post<Image>(this.webUrl, name, this.httpOptions).pipe();
   }
 }

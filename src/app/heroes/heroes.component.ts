@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {Image} from '../image';
-import { HEROES } from '../mock-heroes';
 import {ImageService} from '../image.service';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-heroes',
@@ -13,8 +13,9 @@ export class HeroesComponent implements OnInit {
 
   images: Image[];
   imgUrl: any;
+  selectedFile: File = null;
 
-  constructor(private imageService: ImageService) { }
+  constructor(private imageService: ImageService, private http: HttpClient) { }
 
   ngOnInit() {
     this.getImg();
@@ -30,9 +31,16 @@ export class HeroesComponent implements OnInit {
   }
 
   onSelectFile(event) {
-    this.imgUrl = 'assets/image/' + event.target.files[0].name;
-    console.log(this.imgUrl);
-    this.add(this.imgUrl);
+    this.selectedFile = event.target.files[0];
+    const fd = new FormData();
+
+    fd.append('image', this.selectedFile, this.selectedFile.name);
+
+    this.http.post('http://localhost:3000/files', fd)
+      .subscribe(res => {
+        console.log('res: ', res);
+      });
+    this.add('http://localhost:3000/files/' + this.selectedFile.name);
   }
 
   add(name: string): void {
@@ -41,8 +49,6 @@ export class HeroesComponent implements OnInit {
     this.imageService.addHero({ name } as Image)
       .subscribe(text => {
         this.images.push(text);
-
-        // console.log(text);
       });
   }
 }
