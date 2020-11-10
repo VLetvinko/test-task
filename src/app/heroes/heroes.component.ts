@@ -12,7 +12,6 @@ import {HttpClient} from '@angular/common/http';
 export class HeroesComponent implements OnInit {
 
   images: Image[];
-  imgUrl: any;
   selectedFile: File = null;
 
   constructor(private imageService: ImageService, private http: HttpClient) { }
